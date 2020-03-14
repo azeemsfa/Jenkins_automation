@@ -1,0 +1,52 @@
+timestamps {
+	node('any') {
+		stage('Checkout') {
+			checkout scm
+		}
+		stage('Call Jobs DSL') {
+			jobDsl removedJobAction: 'DELETE', removedViewAction: 'DELETE', targets: '''Jenkins/Pipelines/Folders.groovy
+			Jenkins/Generators/*.groovy
+			Jenkins/Pipelines/**/*.groovy'''
+		}
+		stage('Check Job Deletions') {
+			def reader;
+			try {
+				def file = currentBuild.rawBuild.getLogFile()
+				reader = new BufferedReader(new FileReader(file))
+				def counting = false
+				def count = 0
+
+				String line = reader.readLine();
+				while (line != null) {
+					if (!counting && line.contains("Unreferenced item")) {
+						counting = true
+					}
+					else if (counting && line.contains("GeneratedJob")) {
+						count++
+					}
+					else if (counting && line.contains("Removed item")) {
+						counting = false;
+						break;
+					}
+					line = reader.readLine()
+				}
+				if (count > 9) {
+					def email_subject = "Mass Job Deletions by Seed"
+					def email_content = """The seed job has removed over 9 jobs and/or folders from Jenkins.
+						Recovering from the latest backup will keep all but today's build histories.
+						If builds have happened today, build number collisions may happen.
+						Recommend to manually set all next build numbers to an arbitrarily high number,
+						as per https://github.com/cbdr/CloudOps/wiki/Outage-08-01-17#how-we-resolved-this"""
+					withAWS(role:'ProductionUSEastJenkins-JenkinsAssumableIAMRole-19KIKZI5C8PKJ', roleAccount:'623159365975') {
+				        snsPublish(topicArn: 'arn:aws:sns:us-east-1:623159365975:HighPriorityAlerts', subject: email_subject , message: email_content)
+				   }
+				}
+			} catch (Exception e) {
+				println "Failed to check seed job for mass job deletion."
+				throw e
+			} finally {
+				reader.close()
+			}
+		}
+	}
+}
