@@ -18,12 +18,12 @@ def add_build_config(ci_builds_list){
 
 def check_permissions() {
     can_clone = sh (
-        script: "git ls-remote --exit-code https://github.com/cbdr/${RepositoryName}",
+        script: "git ls-remote --exit-code https://github.com/azeemsfa/${RepositoryName}",
         returnStatus: true
     ) == 0
     if (!can_clone) {
         def msg =   ''' Jenkins does not have adequate permissions for the repository given.
-        Please give write access to the Github service account "CloudOpsSvc" and try again.
+        Please give write access to the Github service account "github" and try again.
         This can be done by adding the service account to a team that has write access to the repository or adding the service account directly as a collaborator.
         '''
         error(msg)
@@ -68,7 +68,7 @@ timestamps {
                     sh """#!/bin/bash -l
                     curl -u ${GHUSERNAME}:${PATOKEN} \
                     -Ss \
-                    --data '{"title": "auto-ci", "head": "${RepositoryName}-${env.BUILD_DISPLAY_NAME}", "base": "master", "body": "Request a review from 'cbdr/cloudops' and your PR will be auto-merged."' \
+                    --data '{"title": "auto-ci", "head": "${RepositoryName}-${env.BUILD_DISPLAY_NAME}", "base": "master", "body": "Request a review from 'azeemsfa/Jenkins_automation' and your PR will be auto-merged."' \
                     https://api.github.com/repos/azeemsfa/Jenkins_automation/pulls
                     """
                 }
