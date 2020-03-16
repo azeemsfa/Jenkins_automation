@@ -31,7 +31,7 @@ def check_permissions() {
 }
 
 timestamps {
-    node('CloudOps') {
+    node('any') {
         wrap([$class: 'BuildUser']) {
             stage('Checkout') {
                 deleteDir()
