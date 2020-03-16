@@ -31,7 +31,7 @@ def check_permissions() {
 }
 
 timestamps {
-    node('any') {
+    node('master') {
         wrap([$class: 'BuildUser']) {
             stage('Checkout') {
                 deleteDir()
