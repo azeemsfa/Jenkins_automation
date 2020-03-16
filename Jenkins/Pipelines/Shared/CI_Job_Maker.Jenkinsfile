@@ -46,7 +46,7 @@ timestamps {
                 writeFile file: 'Jenkins/Config/CI.json', text: add_build_config(ci_builds_list)
             }
             stage('Verify Folders') {
-                dir('Jenkins/Pipelines/Shared/CloudOps') {
+                dir('Jenkins/Pipelines/Shared/scripts') {
                     sh '''#!/bin/bash -l
                     groovy FoldersTest.gvy --auto-fix
                     '''
