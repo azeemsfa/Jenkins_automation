@@ -1,2 +1,6 @@
-
+    "cbes/ApiGateway/Build": {
+        "days_to_keep": "5",
+        "max_builds_num": "10",
+        "repo_name": "cbes_apigateway"
+    },
 
