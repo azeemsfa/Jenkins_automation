@@ -23,7 +23,7 @@ def check_permissions() {
     ) == 0
     if (!can_clone) {
         def msg =   ''' Jenkins does not have adequate permissions for the repository given.
-        Please give write access to the Github service account "github" and try again.
+        Please give write access to the Github service account "azeemsfa" and try again.
         This can be done by adding the service account to a team that has write access to the repository or adding the service account directly as a collaborator.
         '''
         error(msg)
