@@ -36,7 +36,7 @@ timestamps {
 						Recovering from the latest backup will keep all but today's build histories.
 						If builds have happened today, build number collisions may happen.
 						Recommend to manually set all next build numbers to an arbitrarily high number,
-						as per https://github.com/cbdr/CloudOps/wiki/Outage-08-01-17#how-we-resolved-this"""
+						as per https://github.com/azeemsfa/Jenkins_automation/wiki/Outage-08-01-17#how-we-resolved-this"""
 					withAWS(role:'ProductionUSEastJenkins-JenkinsAssumableIAMRole-19KIKZI5C8PKJ', roleAccount:'623159365975') {
 				        snsPublish(topicArn: 'arn:aws:sns:us-east-1:623159365975:HighPriorityAlerts', subject: email_subject , message: email_content)
 				   }
