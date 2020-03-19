@@ -17,7 +17,7 @@ def add_build_config(ci_builds_list){
 }
 
 def check_permissions() {
-    can_clone = sh (
+    can_clone = bash (
         script: "git ls-remote --exit-code https://github.com/azeemsfa/${RepositoryName}",
         returnStatus: true
     ) == 0
