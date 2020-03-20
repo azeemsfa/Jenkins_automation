@@ -1,4 +1,4 @@
-@Grab(group='org.codehaus.groovy', module='groovy-all', version='2.4.8')
+@Grab(group='org.codehaus.groovy', module='groovy-all', version='3.0.2')
 
 import org.codehaus.groovy.ast.builder.AstBuilder
 import org.codehaus.groovy.ast.CodeVisitorSupport
